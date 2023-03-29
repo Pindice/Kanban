@@ -1,0 +1,72 @@
+{% extends "tableau/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+  <script src="{% static 'jkanban.js' %}"></script>
+</head>
+<body>
+    <div class="kanban-board">
+        <div class="board-column">
+          <div class="column-header">To Do</div>
+          <div class="column-body">
+            <div class="card">Task 1</div>
+            <div class="card">Task 2</div>
+            <div class="card">Task 3</div>
+          </div>
+        </div>
+        <div class="board-column">
+          <div class="column-header">In Progress</div>
+          <div class="column-body">
+            <div class="card">Task 4</div>
+            <div class="card">Task 5</div>
+          </div>
+        </div>
+        <div class="board-column">
+          <div class="column-header">Done</div>
+          <div class="column-body">
+            <div class="card">Task 6</div>
+          </div>
+        </div>
+      </div>
+</body>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "{% url 'get_colonnes' %}",
+            dataType: "json",
+            success: function(data) {
+                var kanban = new jKanban({
+                    element: '#kanban',
+                    boards: data,
+                    dragBoards: true,
+                    dragItems: true,
+                    click: function(el) {
+                        console.log(el);
+                    },
+                    dropEl: function(el, target, source, sibling) {
+                        console.log(el);
+                        console.log(target);
+                        console.log(source);
+                        console.log(sibling);
+                    },
+                    dragEl: function(el, source) {
+                        console.log(el);
+                        console.log(source);
+                    },
+                    addItemButton: true,
+                    buttonContent: '+',
+                    addItem: function(el, boardId) {
+                        console.log(el);
+                        console.log(boardId);
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
+

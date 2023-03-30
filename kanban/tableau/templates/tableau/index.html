@@ -8,6 +8,29 @@
 <body>
   <div id="myKanban"></div>
 
+  <div>
+    <label for="columnTitle">New Column:</label>
+    <input type="text" id="columnTitle" placeholder="Enter column title">
+    <button id="addColumnBtn">Add Column</button>
+  </div>
+
+  <div>
+    <label for="taskTitle">New Task:</label>
+    <input type="text" id="taskTitle" placeholder="Enter task title">
+    <select id="taskColumn">
+      <option value="">Select column</option>
+    </select>
+    <button id="addTaskBtn">Add Task</button>
+  </div>
+
+  <div>
+    <label for="deleteItemId">Delete Item:</label>
+    <select id="deleteItemId">
+    </select>
+    <button id="deleteItemBtn">Delete Item</button>
+  </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/jkanban@2.0.0/dist/jkanban.min.js"></script>
   <script>
     var board = new jKanban({

@@ -53,3 +53,23 @@ def update_tache(request, tache_id):
     tache.colonne_id = request.POST['colonne_id']
     tache.save()
     return JsonResponse({'message': 'Tâche mise à jour avec succès!'})
+
+def update_data(request):
+    if request.method == 'POST':
+        colonnes = request.POST.getlist('colonnes[]')
+        taches = request.POST.getlist('taches[]')
+
+        for colonne in colonnes:
+            colonne_id = colonne['id']
+            nom_col = colonne['title']
+            Colonne.objects.filter(id=colonne_id).update(nom_col=nom_col)
+
+        for tache in taches:
+            tache_id = tache['id']
+            nom_task = tache['title']
+            colonne_id = tache['column_id']
+            Tache.objects.filter(id=tache_id).update(nom_task=nom_task, colonne_id=colonne_id)
+
+        return JsonResponse({'message': 'Données mises à jour avec succès!'})
+
+    return JsonResponse({'message': 'Erreur lors de la mise à jour des données.'}, status=400)

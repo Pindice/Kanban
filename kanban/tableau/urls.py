@@ -9,5 +9,6 @@ urlpatterns = [
     path('colonnes/update/<int:colonne_id>/', views.update_colonne, name='update_colonne'),
     path('taches/create/', views.create_tache, name='create_tache'),
     path('taches/delete/<int:tache_id>/', views.delete_tache, name='delete_tache'),
-    path('taches/update/<int:tache_id>/', views.update_tache, name='update_tache')
+    path('taches/update/<int:tache_id>/', views.update_tache, name='update_tache'),
+    path('update_data/', views.update_data, name='update_data')
 ]

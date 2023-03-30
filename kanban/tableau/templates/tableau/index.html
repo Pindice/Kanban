@@ -4,84 +4,45 @@
 
 {% block content %}
 <head>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+  <script src="{% static 'jkanban.js' %}"></script>
 </head>
 <body>
-  <div id="myKanban"></div>
 
-  <div>
-    <label for="columnTitle">New Column:</label>
-    <input type="text" id="columnTitle" placeholder="Enter column title">
-    <button id="addColumnBtn">Add Column</button>
-  </div>
-
-  <div>
-    <label for="taskTitle">New Task:</label>
-    <input type="text" id="taskTitle" placeholder="Enter task title">
-    <select id="taskColumn">
-      <option value="">Select column</option>
-    </select>
-    <button id="addTaskBtn">Add Task</button>
-  </div>
-
-  <div>
-    <label for="deleteItemId">Delete Item:</label>
-    <select id="deleteItemId">
-    </select>
-    <button id="deleteItemBtn">Delete Item</button>
-  </div>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/jkanban@2.0.0/dist/jkanban.min.js"></script>
-  <script>
-    var board = new jKanban({
-      element: '#myKanban',
-      gutter: '10px',
-      widthBoard: '250px',
-      dragBoards: false,
-      dragItems: true,
-      boards: [
-        {
-          id: 'todo',
-          title: 'To Do',
-          item: [
-            {
-              title: 'Task 1',
-              description: 'This is the first task.',
-              id: 'task1'
-            },
-            {
-              title: 'Task 2',
-              description: 'This is the second task.',
-              id: 'task2'
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "{% url 'get_colonnes' %}",
+            dataType: "json",
+            success: function(data) {
+                var kanban = new jKanban({
+                    element: '#kanban',
+                    boards: data,
+                    dragBoards: true,
+                    dragItems: true,
+                    click: function(el) {
+                        console.log(el);
+                    },
+                    dropEl: function(el, target, source, sibling) {
+                        console.log(el);
+                        console.log(target);
+                        console.log(source);
+                        console.log(sibling);
+                    },
+                    dragEl: function(el, source) {
+                        console.log(el);
+                        console.log(source);
+                    },
+                    addItemButton: true,
+                    buttonContent: '+',
+                    addItem: function(el, boardId) {
+                        console.log(el);
+                        console.log(boardId);
+                    }
+                });
             }
-          ]
-        },
-        {
-          id: 'inprogress',
-          title: 'In Progress',
-          item: [
-            {
-              title: 'Task 3',
-              description: 'This is the third task.',
-              id: 'task3'
-            }
-          ]
-        },
-        {
-          id: 'done',
-          title: 'Done',
-          item: [
-            {
-              title: 'Task 4',
-              description: 'This is the fourth task.',
-              id: 'task4'
-            }
-          ]
-        }
-      ]
+        });
     });
-  </script>
-</body>
-</html>
+</script>
 {% endblock %}
 

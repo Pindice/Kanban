@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Colonne, Tache
+from tableau.models import Colonne, Tache
 
 class ColonneSerializer(serializers.ModelSerializer):
     class Meta:

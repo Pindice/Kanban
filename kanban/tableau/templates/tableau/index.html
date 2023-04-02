@@ -1,94 +1,109 @@
-{% extends "tableau/base.html" %}
-
-{% load static %}
-
-{% block content %}
+<!DOCTYPE html>
+<html>
 <head>
+    <title>Kanban Board</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/jkanban/dist/jkanban.min.css">
+    <script src="https://unpkg.com/jkanban/dist/jkanban.min.js"></script>
+    <style>
+        .container {
+            padding-top: 30px;
+        }
+    </style>
 </head>
 <body>
-  <div id="myKanban"></div>
+<div id="myKanbanBoard">
+  <!-- Création des colonnes à l'aide de la bibliothèque jKanban -->
+  <div class="row">
+      <div class="col-sm-4">
+          <div class="jkanban-board" id="board1"></div>
+      </div>
+      <div class="col-sm-4">
+          <div class="jkanban-board" id="board2"></div>
+      </div>
+      <div class="col-sm-4">
+          <div class="jkanban-board" id="board3"></div>
+      </div>
+  </div>
+</div>
 
-  <script>
-    var board = new jKanban({
-      element: '#myKanban',
-      gutter: '10px',
-      widthBoard: '250px',
-      dragBoards: false,
-      dragItems: true,
-      boards: [
-        {
-          id: 'todo',
+<script>
+// Define the data for the kanban board
+var boardData = {
+  // Define the columns of the board
+  columns: [
+      {
+          // Define the title and ID of the first column
           title: 'To Do',
-          item: [
-            {
-              title: 'Task 1',
-              description: 'This is the first task.',
-              id: 'task1'
-            },
-            {
-              title: 'Task 2',
-              description: 'This is the second task.',
-              id: 'task2'
-            }
+          id: 'todo',
+          // Define the tasks for the first column
+          tasks: [
+              {
+                  title: 'Task 1',
+                  id: 'task1',
+                  // Any other data associated with the task
+                  // can be included here
+              },
+              {
+                  title: 'Task 2',
+                  id: 'task2'
+              }
           ]
-        },
-        {
-          id: 'inprogress',
+      },
+      {
+          // Define the title and ID of the second column
           title: 'In Progress',
-          item: [
-            {
-              title: 'Task 3',
-              description: 'This is the third task.',
-              id: 'task3'
-            }
+          id: 'inprogress',
+          // Define the tasks for the second column
+          tasks: [
+              {
+                  title: 'Task 3',
+                  id: 'task3'
+              },
+              {
+                  title: 'Task 4',
+                  id: 'task4'
+              }
           ]
-        },
-        {
-          id: 'done',
+      },
+      {
+          // Define the title and ID of the third column
           title: 'Done',
-          item: [
-            {
-              title: 'Task 4',
-              description: 'This is the fourth task.',
-              id: 'task4'
-            }
+          id: 'done',
+          // Define the tasks for the third column
+          tasks: [
+              {
+                  title: 'Task 5',
+                  id: 'task5'
+              },
+              {
+                  title: 'Task 6',
+                  id: 'task6'
+              }
           ]
-        }
-      ]
-    });
-
-    $("#submitBtn").click(function() {
-      var data = [];
-      var boards = board.getBoardElements();
-      for (var i = 0; i < boards.length; i++) {
-        var boardData = {
-          nom_col: boards[i].title,
-          tasks: []
-        };
-        for (var j = 0; j < boards[i].item.length; j++) {
-          var taskData = {
-            nom_task: boards[i].item[j].title
-          };
-          boardData.tasks.push(taskData);
-        }
-        data.push(boardData);
       }
-      $.ajax({
-        type: "POST",
-        url: "/update_data/",
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json",
-        success: function(response) {
-          console.log(response);
-        },
-        error: function(xhr) {
-          console.log(xhr.responseText);
-        }
-      });
-    });
-  </script>
+  ]
+};
+
+// Create a new instance of the kanban board
+var kanbanBoard = new jKanban({
+  // Specify the container element for the board
+  element: '#myKanbanBoard',
+  // Specify the data for the board
+  boards: [boardData],
+  // Specify the width of each column
+  dragBoards: true,
+  dragItems: true,
+  itemHandleOptions:{
+      enabled: true,
+      handleClass: 'item_handle'
+  },
+  boardsWidth: 300,
+  // Specify any other options for the board
+  // (see the jkanban documentation for a full list
+  // of available options)
+});
+</script>
 </body>
 </html>
-{% endblock %}
-

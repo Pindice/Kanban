@@ -11,7 +11,7 @@ class Colonne(models.Model):
 class Tache(models.Model):
     pos_task = models.IntegerField(null=False)
     nom_task = models.CharField(max_length=100)
-    col_task = models.ForeignKey(Colonne, on_delete=models.CASCADE)
+    col_task = models.ForeignKey(Colonne, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.nom_task
